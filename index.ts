@@ -1,12 +1,16 @@
-import express, { Request, Response, NextFunction } from "express";
-
+import express from "express";
+import * as mongoose from "mongoose";
+import Todo from "./Routes/Todo";
+import "dotenv/config";
+import Login from "./Auth/Login";
 const app = express();
 
-app.listen("3001", () => {
-  console.log(`
-    
-    #############################################
-        🛡️ Server listening on port: 3001 🛡️
-    #############################################  
-    `);
-});
+mongoose
+  .connect(`${process.env.MONGOKEY}`)
+  .then((result) =>
+    app.listen(3001, () => console.log(`app running on port 3001`))
+  )
+  .catch((err) => console.log(err));
+
+app.use("/todo", Todo);
+app.use("/login", Login);
